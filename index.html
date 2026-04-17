@@ -598,7 +598,9 @@ section { padding: 100px 5%; }
 }
 
 .actor-screen { display: none; }
-.actor-screen.active { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+.actor-screen.active { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.actor-screen.active .mockup[style*="grid-column"] ~ .actor-desc,
+.actor-screen.active .mockup[style*="grid-column"] { grid-column: 1/-1; }
 
 /* ── PHONE MOCKUP BLANC ── */
 .mockup {
@@ -1376,44 +1378,217 @@ footer {
 
   <!-- Établissement -->
   <div class="actor-screen active" id="actor-etab">
-    <div class="mockup reveal">
-      <div class="phone-frame">
-        <div class="phone-notch">
-          <div class="phone-camera"></div>
-          <div class="phone-speaker"></div>
-          <div class="phone-camera"></div>
-        </div>
-        <div class="phone-inner">
-          <div class="p-topbar">
-            <div class="p-topbar-left">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" stroke="#1A3A5C" stroke-width="1.8" fill="none"/></svg>
-              <div>
-                <div class="p-appname">DIPLOCHAIN</div>
-                <div class="p-role">Portail Établissement</div>
+    <div class="mockup reveal" style="max-width:100%;width:100%;grid-column:1/-1;">
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@600&display=swap');
+        .etab-wrap { font-family:'DM Sans',sans-serif; display:flex; flex-direction:column; align-items:center; gap:2rem; }
+        .etab-wrap .phones-row { display:flex; gap:1.5rem; flex-wrap:wrap; justify-content:center; }
+        .etab-wrap .phone-group { display:flex; flex-direction:column; align-items:center; gap:8px; }
+        .etab-wrap .phone-caption { font-size:12px; color:#7A8499; font-weight:500; }
+        .etab-wrap .phone { width:280px; min-height:560px; background:#fff; border-radius:36px; border:2px solid #D6D0C4; overflow:hidden; box-shadow:0 2px 0 #D6D0C4; display:flex; flex-direction:column; }
+        .etab-wrap .phone-notch { height:24px; background:#1A2E4A; display:flex; align-items:center; justify-content:center; }
+        .etab-wrap .phone-notch-bar { width:70px; height:5px; background:rgba(255,255,255,0.25); border-radius:10px; }
+        .etab-wrap .screen { flex:1; display:flex; flex-direction:column; overflow:hidden; }
+        .etab-wrap .etopbar { background:#1A2E4A; padding:12px 16px 10px; display:flex; align-items:center; justify-content:space-between; }
+        .etab-wrap .etopbar-logo { display:flex; align-items:center; gap:8px; }
+        .etab-wrap .elogo-hex { width:26px; height:26px; background:#C8A850; clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); display:flex; align-items:center; justify-content:center; }
+        .etab-wrap .elogo-letter { font-size:12px; font-weight:600; color:#1A2E4A; }
+        .etab-wrap .etopbar-title { font-size:13px; font-weight:500; color:#fff; }
+        .etab-wrap .etopbar-right { width:30px; height:30px; background:rgba(255,255,255,0.12); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:600; color:#fff; }
+        .etab-wrap .econtent { flex:1; background:#F8F7F4; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:10px; }
+        .etab-wrap .ebanner { background:linear-gradient(135deg,#1A2E4A 0%,#263D5E 100%); border-radius:12px; padding:14px; color:#fff; }
+        .etab-wrap .ebanner-greeting { font-size:11px; color:rgba(255,255,255,0.65); margin-bottom:2px; }
+        .etab-wrap .ebanner-name { font-family:'Playfair Display',serif; font-size:15px; color:#fff; margin-bottom:8px; }
+        .etab-wrap .ebanner-stats { display:flex; gap:8px; margin-top:6px; }
+        .etab-wrap .ebstat { flex:1; background:rgba(255,255,255,0.12); border-radius:8px; padding:6px 8px; text-align:center; }
+        .etab-wrap .ebstat-num { font-size:16px; font-weight:600; color:#C8A850; }
+        .etab-wrap .ebstat-lbl { font-size:9px; color:rgba(255,255,255,0.6); margin-top:1px; }
+        .etab-wrap .esection-title { font-size:12px; font-weight:500; color:#3A4A5E; }
+        .etab-wrap .eaction-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+        .etab-wrap .eaction-btn { background:#fff; border-radius:10px; border:1px solid #E8E4DC; padding:12px 10px; display:flex; flex-direction:column; align-items:flex-start; gap:5px; }
+        .etab-wrap .eaction-icon { width:28px; height:28px; border-radius:7px; display:flex; align-items:center; justify-content:center; }
+        .etab-wrap .eicon-gold { background:#FBF3E0; }
+        .etab-wrap .eicon-blue { background:#E6EDF6; }
+        .etab-wrap .eicon-green { background:#E6F2ED; }
+        .etab-wrap .eicon-red { background:#FAECEA; }
+        .etab-wrap .eaction-lbl { font-size:11px; font-weight:500; color:#1A2E4A; line-height:1.3; }
+        .etab-wrap .elist-card { background:#fff; border-radius:10px; border:1px solid #E8E4DC; overflow:hidden; }
+        .etab-wrap .elist-header { padding:10px 12px 7px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #F0EDE6; }
+        .etab-wrap .elist-header-title { font-size:12px; font-weight:500; color:#1A2E4A; }
+        .etab-wrap .elist-header-link { font-size:10px; color:#C8A850; }
+        .etab-wrap .elist-item { padding:9px 12px; display:flex; align-items:center; gap:9px; border-bottom:1px solid #F5F3EE; }
+        .etab-wrap .elist-item:last-child { border-bottom:none; }
+        .etab-wrap .eitem-avatar { width:30px; height:30px; border-radius:50%; background:#E6EDF6; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; color:#1A2E4A; flex-shrink:0; }
+        .etab-wrap .eitem-info { flex:1; min-width:0; }
+        .etab-wrap .eitem-name { font-size:11px; font-weight:500; color:#1A2E4A; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .etab-wrap .eitem-detail { font-size:9px; color:#9AA3B0; margin-top:1px; }
+        .etab-wrap .ebadge { font-size:9px; font-weight:500; padding:2px 7px; border-radius:20px; }
+        .etab-wrap .ebadge-success { background:#E6F2ED; color:#1A6B42; }
+        .etab-wrap .ebadge-pending { background:#FBF3E0; color:#8B6914; }
+        .etab-wrap .ebottom-nav { background:#fff; border-top:1px solid #E8E4DC; display:flex; padding:7px 0 3px; }
+        .etab-wrap .enav-item { flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:3px 0; }
+        .etab-wrap .enav-dot { width:4px; height:4px; border-radius:50%; background:#C8A850; margin-top:2px; }
+        .etab-wrap .enav-label { font-size:9px; color:#9AA3B0; }
+        .etab-wrap .enav-label.active { color:#C8A850; }
+        .etab-wrap .eback-btn { width:26px; height:26px; display:flex; align-items:center; justify-content:center; }
+        .etab-wrap .etopbar-center { flex:1; text-align:center; }
+        .etab-wrap .estep-indicator { display:flex; justify-content:center; align-items:center; gap:5px; padding:6px 0; }
+        .etab-wrap .estep-dot { width:5px; height:5px; border-radius:50%; background:#D6D0C4; }
+        .etab-wrap .estep-dot.active { width:16px; border-radius:3px; background:#C8A850; }
+        .etab-wrap .eform-group { display:flex; flex-direction:column; gap:3px; }
+        .etab-wrap .eform-label { font-size:10px; font-weight:500; color:#5A6478; }
+        .etab-wrap .eform-input { background:#F5F3EE; border:1px solid #E0DAD0; border-radius:7px; padding:8px 10px; font-size:11px; color:#1A2E4A; font-family:'DM Sans',sans-serif; }
+        .etab-wrap .eform-input.filled { background:#fff; border-color:#C8A850; }
+        .etab-wrap .eform-row { display:flex; gap:7px; }
+        .etab-wrap .eform-row .eform-group { flex:1; }
+        .etab-wrap .ebtn-primary { background:#1A2E4A; color:#fff; border:none; border-radius:9px; padding:10px; font-size:12px; font-weight:500; font-family:'DM Sans',sans-serif; width:100%; cursor:pointer; text-align:center; }
+        .etab-wrap .ebtn-gold { background:#C8A850; color:#1A2E4A; border:none; border-radius:9px; padding:10px; font-size:12px; font-weight:500; font-family:'DM Sans',sans-serif; width:100%; cursor:pointer; text-align:center; }
+        .etab-wrap .ehash-box { background:#F5F3EE; border:1px dashed #C8A850; border-radius:7px; padding:9px 12px; font-size:9px; color:#5A6478; font-family:monospace; word-break:break-all; text-align:left; }
+        .etab-wrap .esuccess-screen { display:flex; flex-direction:column; align-items:center; justify-content:center; flex:1; padding:20px; text-align:center; gap:10px; }
+        .etab-wrap .esuccess-hex { width:56px; height:56px; background:#1A2E4A; clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); display:flex; align-items:center; justify-content:center; }
+        .etab-wrap .esuccess-title { font-family:'Playfair Display',serif; font-size:15px; color:#1A2E4A; }
+        .etab-wrap .esuccess-sub { font-size:11px; color:#7A8499; line-height:1.5; }
+      </style>
+      <div class="etab-wrap">
+        <div class="phones-row">
+          <!-- Écran 1: Tableau de bord -->
+          <div class="phone-group">
+            <div class="phone">
+              <div class="phone-notch"><div class="phone-notch-bar"></div></div>
+              <div class="screen">
+                <div class="etopbar">
+                  <div class="etopbar-logo"><div class="elogo-hex"><span class="elogo-letter">D</span></div><span class="etopbar-title">DiploChain</span></div>
+                  <div class="etopbar-right">UB</div>
+                </div>
+                <div class="econtent">
+                  <div class="ebanner">
+                    <div class="ebanner-greeting">Université de Bobo-Dioulasso</div>
+                    <div class="ebanner-name">Tableau de bord</div>
+                    <div class="ebanner-stats">
+                      <div class="ebstat"><div class="ebstat-num">1 248</div><div class="ebstat-lbl">Diplômes émis</div></div>
+                      <div class="ebstat"><div class="ebstat-num">12</div><div class="ebstat-lbl">En attente</div></div>
+                      <div class="ebstat"><div class="ebstat-num">3</div><div class="ebstat-lbl">Invalides</div></div>
+                    </div>
+                  </div>
+                  <div class="esection-title">Actions rapides</div>
+                  <div class="eaction-grid">
+                    <div class="eaction-btn"><div class="eaction-icon eicon-gold"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="#C8A850" stroke-width="1.5"/><path d="M5 8h6M8 5v6" stroke="#C8A850" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="eaction-lbl">Émettre un diplôme</div></div>
+                    <div class="eaction-btn"><div class="eaction-icon eicon-blue"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="#185FA5" stroke-width="1.5"/><path d="M5 5h6M5 8h4" stroke="#185FA5" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="eaction-lbl">Registre blockchain</div></div>
+                    <div class="eaction-btn"><div class="eaction-icon eicon-green"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5" stroke="#1A6B42" stroke-width="1.5"/><path d="M6 8l1.5 1.5L10.5 6" stroke="#1A6B42" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="eaction-lbl">Vérifier un diplôme</div></div>
+                    <div class="eaction-btn"><div class="eaction-icon eicon-red"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2L2 14h12L8 2z" stroke="#A32D2D" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 7v3M8 11.5v.5" stroke="#A32D2D" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="eaction-lbl">Signaler une fraude</div></div>
+                  </div>
+                  <div class="elist-card">
+                    <div class="elist-header"><span class="elist-header-title">Activité récente</span><span class="elist-header-link">Voir tout →</span></div>
+                    <div class="elist-item"><div class="eitem-avatar">KT</div><div class="eitem-info"><div class="eitem-name">Konaté Tapsoba</div><div class="eitem-detail">Master Informatique · 2024</div></div><span class="ebadge ebadge-success">Émis</span></div>
+                    <div class="elist-item"><div class="eitem-avatar">AF</div><div class="eitem-info"><div class="eitem-name">Aïssata Fofana</div><div class="eitem-detail">Licence en Droit · 2024</div></div><span class="ebadge ebadge-success">Émis</span></div>
+                    <div class="elist-item"><div class="eitem-avatar">BS</div><div class="eitem-info"><div class="eitem-name">Boureima Sawadogo</div><div class="eitem-detail">BTS Comptabilité · 2024</div></div><span class="ebadge ebadge-pending">En attente</span></div>
+                  </div>
+                </div>
+                <div class="ebottom-nav">
+                  <div class="enav-item"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="3" y="10" width="6" height="7" rx="1" fill="#C8A850"/><rect x="11" y="3" width="6" height="14" rx="1" fill="#C8A850"/></svg><span class="enav-label active">Tableau</span><div class="enav-dot"></div></div>
+                  <div class="enav-item"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="4" y="4" width="12" height="12" rx="2" stroke="#B0B8C5" stroke-width="1.5"/><path d="M7 8h6M7 11h4" stroke="#B0B8C5" stroke-width="1.5" stroke-linecap="round"/></svg><span class="enav-label">Diplômes</span></div>
+                  <div class="enav-item"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="6" stroke="#B0B8C5" stroke-width="1.5"/><path d="M8 10l1.5 1.5L12.5 8" stroke="#B0B8C5" stroke-width="1.5" stroke-linecap="round"/></svg><span class="enav-label">Vérifier</span></div>
+                  <div class="enav-item"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3" stroke="#B0B8C5" stroke-width="1.5"/><path d="M4 17c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#B0B8C5" stroke-width="1.5" stroke-linecap="round"/></svg><span class="enav-label">Profil</span></div>
+                </div>
               </div>
             </div>
-            <div class="p-status-dot"></div>
+            <div class="phone-caption">1 — Tableau de bord</div>
           </div>
-          <div class="p-body">
-            <div class="p-label">Émettre un diplôme</div>
-            <div class="p-field active"><div class="p-field-label">Nom complet de l'étudiant</div><div class="p-field-val">SAWADOGO Aminata</div></div>
-            <div class="p-field active"><div class="p-field-label">Filière</div><div class="p-field-val">Médecine Générale</div></div>
-            <div class="p-field active"><div class="p-field-label">Mention</div><div class="p-field-val">Très Bien</div></div>
-            <div class="p-field active"><div class="p-field-label">Année universitaire</div><div class="p-field-val">2024 — 2025</div></div>
-            <div class="p-field"><div class="p-field-label">Établissement</div><div class="p-field-val">Université de Ouagadougou</div></div>
-            <button class="p-btn">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="5" rx="9" ry="3" stroke="white" stroke-width="1.8"/><path d="M21 12c0 1.66-4.03 3-9 3S3 13.66 3 12" stroke="white" stroke-width="1.8"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" stroke="white" stroke-width="1.8"/></svg>
-              Enregistrer sur Blockchain
-            </button>
-            <div class="p-chain">
-              <div class="p-status-dot"></div>
-              <span>Réseau actif · 12 nœuds connectés</span>
+          <!-- Écran 2: Formulaire émission -->
+          <div class="phone-group">
+            <div class="phone">
+              <div class="phone-notch"><div class="phone-notch-bar"></div></div>
+              <div class="screen">
+                <div class="etopbar">
+                  <div class="eback-btn"><svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M11 4L6 9l5 5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="etopbar-center"><span style="color:#fff;font-size:13px;font-weight:500;">Émettre un diplôme</span></div>
+                  <div style="width:26px;"></div>
+                </div>
+                <div style="background:#fff;padding:8px 12px;">
+                  <div class="estep-indicator"><div class="estep-dot active"></div><div class="estep-dot"></div><div class="estep-dot"></div></div>
+                  <div style="font-size:10px;text-align:center;color:#7A8499;">Étape 1/3 — Informations du diplômé</div>
+                </div>
+                <div class="econtent">
+                  <div class="elist-card" style="padding:12px;gap:10px;display:flex;flex-direction:column;">
+                    <div class="eform-group"><div class="eform-label">Nom complet</div><div class="eform-input filled">Konaté Ibrahim Tapsoba</div></div>
+                    <div class="eform-group"><div class="eform-label">Numéro étudiant</div><div class="eform-input filled">UBB-2024-04571</div></div>
+                    <div class="eform-row">
+                      <div class="eform-group"><div class="eform-label">Date de naissance</div><div class="eform-input filled">14/03/1999</div></div>
+                      <div class="eform-group"><div class="eform-label">Sexe</div><div class="eform-input filled">M</div></div>
+                    </div>
+                    <div class="eform-group"><div class="eform-label">Numéro de téléphone</div><div class="eform-input">+226 __ __ __ __</div></div>
+                  </div>
+                  <button class="ebtn-primary">Suivant — Diplôme →</button>
+                  <div style="font-size:9px;color:#B0B8C5;text-align:center;">Données chiffrées sur blockchain</div>
+                </div>
+              </div>
             </div>
+            <div class="phone-caption">2 — Formulaire (étape 1/3)</div>
+          </div>
+          <!-- Écran 3: Signature blockchain -->
+          <div class="phone-group">
+            <div class="phone">
+              <div class="phone-notch"><div class="phone-notch-bar"></div></div>
+              <div class="screen">
+                <div class="etopbar">
+                  <div class="eback-btn"><svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M11 4L6 9l5 5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="etopbar-center"><span style="color:#fff;font-size:13px;font-weight:500;">Confirmer et signer</span></div>
+                  <div style="width:26px;"></div>
+                </div>
+                <div style="background:#fff;padding:8px 12px;">
+                  <div class="estep-indicator"><div class="estep-dot"></div><div class="estep-dot"></div><div class="estep-dot active"></div></div>
+                  <div style="font-size:10px;text-align:center;color:#7A8499;">Étape 3/3 — Signature blockchain</div>
+                </div>
+                <div class="econtent">
+                  <div class="elist-card" style="overflow:visible;">
+                    <div style="padding:12px;border-bottom:1px solid #F0EDE6;">
+                      <div style="font-size:11px;font-weight:500;color:#1A2E4A;margin-bottom:7px;">Récapitulatif</div>
+                      <table style="width:100%;font-size:10px;border-collapse:collapse;">
+                        <tr><td style="color:#9AA3B0;padding:2px 0;">Nom</td><td style="color:#1A2E4A;text-align:right;font-weight:500;">Konaté I. Tapsoba</td></tr>
+                        <tr><td style="color:#9AA3B0;padding:2px 0;">Diplôme</td><td style="color:#1A2E4A;text-align:right;font-weight:500;">Master Informatique</td></tr>
+                        <tr><td style="color:#9AA3B0;padding:2px 0;">Mention</td><td style="color:#1A2E4A;text-align:right;font-weight:500;">Très Bien</td></tr>
+                        <tr><td style="color:#9AA3B0;padding:2px 0;">Établissement</td><td style="color:#1A2E4A;text-align:right;font-weight:500;">Univ. Bobo-Dioulasso</td></tr>
+                      </table>
+                    </div>
+                    <div style="padding:10px 12px;">
+                      <div style="font-size:10px;color:#5A6478;margin-bottom:5px;">Signature cryptographique :</div>
+                      <div class="ehash-box">0x3f8a...c291 · Clé privée établissement</div>
+                    </div>
+                    <div style="padding:0 12px 12px;">
+                      <div style="background:#FBF3E0;border-radius:7px;padding:8px 10px;font-size:9px;color:#8B6914;line-height:1.4;">⚠️ Une fois signé, ce diplôme est enregistré de façon permanente et infalsifiable sur la blockchain.</div>
+                    </div>
+                  </div>
+                  <button class="ebtn-gold">Signer et enregistrer sur blockchain</button>
+                </div>
+              </div>
+            </div>
+            <div class="phone-caption">3 — Signature blockchain</div>
+          </div>
+          <!-- Écran 4: Succès -->
+          <div class="phone-group">
+            <div class="phone">
+              <div class="phone-notch"><div class="phone-notch-bar"></div></div>
+              <div class="screen">
+                <div class="etopbar">
+                  <div class="etopbar-logo"><div class="elogo-hex"><span class="elogo-letter">D</span></div><span class="etopbar-title">DiploChain</span></div>
+                  <div class="etopbar-right">UB</div>
+                </div>
+                <div class="esuccess-screen">
+                  <div class="esuccess-hex"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M6 14l5 5 11-11" stroke="#C8A850" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="esuccess-title">Diplôme enregistré !</div>
+                  <div class="esuccess-sub">Le diplôme de Konaté Ibrahim Tapsoba a été signé et gravé sur la blockchain avec succès.</div>
+                  <div class="ehash-box" style="font-size:9px;">ID: DC-2024-UBB-04571<br>Hash: 0x4f8a2b9c1d3e7f6a…<br>Block: #1847392 · Confirmé ✓</div>
+                  <div style="background:#E6EDF6;border-radius:8px;padding:9px 12px;font-size:10px;color:#185FA5;width:100%;text-align:center;">📲 SMS envoyé au diplômé</div>
+                  <button class="ebtn-primary" style="font-size:11px;">Émettre un autre diplôme</button>
+                </div>
+              </div>
+            </div>
+            <div class="phone-caption">4 — Succès blockchain</div>
           </div>
         </div>
       </div>
     </div>
-    <div class="actor-desc reveal">
+    <div class="actor-desc reveal" style="grid-column:1/-1;max-width:680px;margin:0 auto;">
       <h3>Interface<br><span>Établissement</span></h3>
       <p>L'établissement accrédité saisit les informations officielles du diplôme et les signe avec sa clé privée. L'enregistrement sur la blockchain est instantané et permanent.</p>
       <ul class="steps">
@@ -1439,60 +1614,235 @@ footer {
 
   <!-- Diplômé -->
   <div class="actor-screen" id="actor-diplome">
-    <div class="mockup reveal">
-      <div class="phone-frame">
-        <div class="phone-notch">
-          <div class="phone-camera"></div>
-          <div class="phone-speaker"></div>
-          <div class="phone-camera"></div>
-        </div>
-        <div class="phone-inner">
-          <div class="p-topbar">
-            <div class="p-topbar-left">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z" stroke="#1A3A5C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 12v5c3.33 1.67 8.67 1.67 12 0v-5" stroke="#1A3A5C" stroke-width="1.8" stroke-linecap="round"/></svg>
-              <div>
-                <div class="p-appname">DIPLOCHAIN</div>
-                <div class="p-role">Mon Espace Diplômé</div>
+    <div class="mockup reveal" style="max-width:100%;width:100%;grid-column:1/-1;">
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@600&display=swap');
+        .dipl-wrap { font-family:'DM Sans',sans-serif; display:flex; flex-direction:column; align-items:center; gap:2rem; }
+        .dipl-wrap .phones-row { display:flex; gap:1.5rem; flex-wrap:wrap; justify-content:center; }
+        .dipl-wrap .phone-group { display:flex; flex-direction:column; align-items:center; gap:8px; }
+        .dipl-wrap .phone-caption { font-size:12px; color:#7A8499; font-weight:500; }
+        .dipl-wrap .phone { width:280px; min-height:560px; background:#fff; border-radius:36px; border:2px solid #D6D0C4; overflow:hidden; box-shadow:0 2px 0 #D6D0C4; display:flex; flex-direction:column; }
+        .dipl-wrap .phone-notch { height:24px; background:#0F4C3A; display:flex; align-items:center; justify-content:center; }
+        .dipl-wrap .phone-notch-bar { width:70px; height:5px; background:rgba(255,255,255,0.2); border-radius:10px; }
+        .dipl-wrap .screen { flex:1; display:flex; flex-direction:column; overflow:hidden; }
+        .dipl-wrap .dtopbar { background:#0F4C3A; padding:12px 16px 10px; display:flex; align-items:center; justify-content:space-between; }
+        .dipl-wrap .dtopbar-logo { display:flex; align-items:center; gap:8px; }
+        .dipl-wrap .dlogo-hex { width:26px; height:26px; background:#D4A843; clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); display:flex; align-items:center; justify-content:center; }
+        .dipl-wrap .dlogo-letter { font-size:12px; font-weight:600; color:#0F4C3A; }
+        .dipl-wrap .dtopbar-title { font-size:13px; font-weight:500; color:#fff; }
+        .dipl-wrap .dtopbar-right { width:30px; height:30px; background:rgba(255,255,255,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:600; color:#fff; }
+        .dipl-wrap .dcontent { flex:1; background:#F8F7F4; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:10px; }
+        .dipl-wrap .dhero-card { background:linear-gradient(135deg,#0F4C3A 0%,#1A6B52 100%); border-radius:14px; padding:14px; color:#fff; position:relative; overflow:hidden; }
+        .dipl-wrap .dhero-greeting { font-size:11px; color:rgba(255,255,255,0.6); margin-bottom:2px; }
+        .dipl-wrap .dhero-name { font-family:'Playfair Display',serif; font-size:15px; color:#fff; margin-bottom:3px; }
+        .dipl-wrap .dhero-school { font-size:10px; color:rgba(255,255,255,0.55); margin-bottom:10px; }
+        .dipl-wrap .dhero-id-box { background:rgba(255,255,255,0.1); border-radius:7px; padding:7px 10px; display:flex; align-items:center; justify-content:space-between; }
+        .dipl-wrap .dhero-id-label { font-size:9px; color:rgba(255,255,255,0.5); }
+        .dipl-wrap .dhero-id-val { font-size:10px; font-weight:500; color:#D4A843; font-family:monospace; }
+        .dipl-wrap .dsection-title { font-size:12px; font-weight:500; color:#3A4A5E; padding:0 2px; }
+        .dipl-wrap .ddipl-card { background:#fff; border-radius:12px; border:1px solid #E8E4DC; overflow:hidden; }
+        .dipl-wrap .ddipl-card-top { background:#0F4C3A; padding:12px 14px; display:flex; justify-content:space-between; align-items:flex-start; }
+        .dipl-wrap .ddipl-type { font-size:9px; color:rgba(255,255,255,0.6); margin-bottom:2px; }
+        .dipl-wrap .ddipl-name { font-family:'Playfair Display',serif; font-size:13px; color:#fff; }
+        .dipl-wrap .ddipl-year { font-size:18px; font-weight:600; color:#D4A843; }
+        .dipl-wrap .ddipl-body { padding:10px 14px; }
+        .dipl-wrap .ddipl-row { display:flex; justify-content:space-between; padding:3px 0; border-bottom:1px solid #F5F3EE; }
+        .dipl-wrap .ddipl-row:last-child { border-bottom:none; }
+        .dipl-wrap .ddipl-key { font-size:10px; color:#9AA3B0; }
+        .dipl-wrap .ddipl-val { font-size:10px; font-weight:500; color:#1A2E4A; }
+        .dipl-wrap .ddipl-footer { padding:9px 14px; background:#F8F7F4; display:flex; justify-content:space-between; align-items:center; border-top:1px solid #E8E4DC; }
+        .dipl-wrap .dverified-pill { display:flex; align-items:center; gap:4px; background:#E6F2ED; border-radius:20px; padding:3px 9px; font-size:9px; font-weight:500; color:#1A6B42; }
+        .dipl-wrap .daction-row { display:flex; gap:7px; }
+        .dipl-wrap .daction-btn-sm { flex:1; background:#fff; border:1px solid #E8E4DC; border-radius:9px; padding:9px 6px; display:flex; flex-direction:column; align-items:center; gap:4px; }
+        .dipl-wrap .daction-btn-sm span { font-size:10px; font-weight:500; color:#1A2E4A; text-align:center; }
+        .dipl-wrap .dqr-card { background:#fff; border-radius:12px; border:1px solid #E8E4DC; padding:14px; display:flex; flex-direction:column; align-items:center; gap:10px; }
+        .dipl-wrap .dqr-placeholder { width:120px; height:120px; background:#F5F3EE; border-radius:9px; border:2px dashed #D4A843; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; }
+        .dipl-wrap .dlink-box { width:100%; background:#F5F3EE; border:1px solid #E0DAD0; border-radius:7px; padding:8px 10px; font-size:9px; color:#5A6478; font-family:monospace; word-break:break-all; }
+        .dipl-wrap .dbottom-nav { background:#fff; border-top:1px solid #E8E4DC; display:flex; padding:7px 0 3px; }
+        .dipl-wrap .dnav-item { flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:3px 0; }
+        .dipl-wrap .dnav-dot { width:4px; height:4px; border-radius:50%; background:#D4A843; margin-top:2px; }
+        .dipl-wrap .dnav-label { font-size:9px; color:#9AA3B0; }
+        .dipl-wrap .dnav-label.active { color:#D4A843; }
+        .dipl-wrap .dback-btn { width:26px; height:26px; display:flex; align-items:center; justify-content:center; }
+        .dipl-wrap .dtopbar-center { flex:1; text-align:center; }
+        .dipl-wrap .dhash-box { background:#F5F3EE; border:1px dashed #D4A843; border-radius:7px; padding:8px 12px; font-size:9px; color:#5A6478; font-family:monospace; word-break:break-all; text-align:left; }
+        .dipl-wrap .dprofile-header { background:#0F4C3A; padding:16px 16px 14px; display:flex; flex-direction:column; align-items:center; gap:7px; }
+        .dipl-wrap .dprofile-avatar { width:50px; height:50px; border-radius:50%; background:#D4A843; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:600; color:#0F4C3A; }
+        .dipl-wrap .dprofile-name { font-family:'Playfair Display',serif; font-size:14px; color:#fff; }
+        .dipl-wrap .dprofile-univ { font-size:10px; color:rgba(255,255,255,0.55); }
+        .dipl-wrap .dverified-badge { display:flex; align-items:center; gap:4px; background:rgba(212,168,67,0.2); border-radius:20px; padding:3px 9px; font-size:9px; font-weight:500; color:#D4A843; }
+        .dipl-wrap .dhistory-item { padding:10px 12px; display:flex; gap:9px; align-items:flex-start; border-bottom:1px solid #F5F3EE; }
+        .dipl-wrap .dhistory-dot { width:7px; height:7px; border-radius:50%; margin-top:3px; flex-shrink:0; }
+        .dipl-wrap .dhistory-text { font-size:10px; color:#3A4A5E; line-height:1.5; }
+        .dipl-wrap .dhistory-time { font-size:9px; color:#B0B8C5; margin-top:1px; }
+        .dipl-wrap .dbadge { font-size:9px; font-weight:500; padding:2px 7px; border-radius:20px; }
+        .dipl-wrap .dbadge-success { background:#E6F2ED; color:#1A6B42; }
+        .dipl-wrap .dbadge-new { background:#E6EDF6; color:#185FA5; }
+        .dipl-wrap .dshare-option { display:flex; align-items:center; gap:10px; padding:10px 12px; border-bottom:1px solid #F5F3EE; background:#fff; }
+        .dipl-wrap .dshare-icon { width:32px; height:32px; border-radius:9px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .dipl-wrap .dshare-info { flex:1; }
+        .dipl-wrap .dshare-name { font-size:11px; font-weight:500; color:#1A2E4A; }
+        .dipl-wrap .dshare-desc { font-size:9px; color:#9AA3B0; }
+        .dipl-wrap .dshare-arrow { font-size:13px; color:#B0B8C5; }
+        .dipl-wrap .dlist-card { background:#fff; border-radius:10px; border:1px solid #E8E4DC; overflow:hidden; }
+        .dipl-wrap .dlist-header { padding:10px 12px 7px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #F0EDE6; }
+        .dipl-wrap .dlist-header-title { font-size:12px; font-weight:500; color:#1A2E4A; }
+        .dipl-wrap .dlist-header-link { font-size:10px; color:#D4A843; }
+      </style>
+      <div class="dipl-wrap">
+        <div class="phones-row">
+          <!-- Écran 1: Portefeuille diplômes -->
+          <div class="phone-group">
+            <div class="phone">
+              <div class="phone-notch"><div class="phone-notch-bar"></div></div>
+              <div class="screen">
+                <div class="dtopbar">
+                  <div class="dtopbar-logo"><div class="dlogo-hex"><span class="dlogo-letter">D</span></div><span class="dtopbar-title">DiploChain</span></div>
+                  <div class="dtopbar-right">KT</div>
+                </div>
+                <div class="dcontent">
+                  <div class="dhero-card">
+                    <div class="dhero-greeting">Bienvenue,</div>
+                    <div class="dhero-name">Konaté Ibrahim</div>
+                    <div class="dhero-school">Université de Bobo-Dioulasso</div>
+                    <div class="dhero-id-box"><span class="dhero-id-label">Identifiant diplômé</span><span class="dhero-id-val">DIPL-UBB-2024-04571</span></div>
+                  </div>
+                  <div class="dsection-title">Mes diplômes (2)</div>
+                  <div class="ddipl-card">
+                    <div class="ddipl-card-top"><div><div class="ddipl-type">Diplôme universitaire</div><div class="ddipl-name">Master en Informatique</div></div><div class="ddipl-year">2024</div></div>
+                    <div class="ddipl-body">
+                      <div class="ddipl-row"><span class="ddipl-key">Mention</span><span class="ddipl-val">Très Bien</span></div>
+                      <div class="ddipl-row"><span class="ddipl-key">Spécialité</span><span class="ddipl-val">Génie Logiciel</span></div>
+                    </div>
+                    <div class="ddipl-footer"><div class="dverified-pill"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#1A6B42" stroke-width="1.3" stroke-linecap="round"/></svg>Vérifié blockchain</div><span style="font-size:10px;color:#D4A843;font-weight:500;">Voir →</span></div>
+                  </div>
+                  <div class="ddipl-card">
+                    <div class="ddipl-card-top"><div><div class="ddipl-type">Diplôme universitaire</div><div class="ddipl-name">Licence en Informatique</div></div><div class="ddipl-year">2022</div></div>
+                    <div class="ddipl-footer"><div class="dverified-pill"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#1A6B42" stroke-width="1.3" stroke-linecap="round"/></svg>Vérifié blockchain</div><span style="font-size:10px;color:#D4A843;font-weight:500;">Voir →</span></div>
+                  </div>
+                  <div class="daction-row">
+                    <div class="daction-btn-sm"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 3v10M6 9l4 4 4-4" stroke="#0F4C3A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 17h14" stroke="#0F4C3A" stroke-width="1.5" stroke-linecap="round"/></svg><span>Télécharger</span></div>
+                    <div class="daction-btn-sm"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M13 4l4 4-4 4M3 12v-1a4 4 0 014-4h10" stroke="#0F4C3A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Partager</span></div>
+                    <div class="daction-btn-sm"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="5" y="5" width="10" height="10" rx="1" stroke="#0F4C3A" stroke-width="1.5"/><path d="M8 8h4v4H8z" stroke="#0F4C3A" stroke-width="1.2"/></svg><span>QR Code</span></div>
+                    <div class="daction-btn-sm"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="6" stroke="#0F4C3A" stroke-width="1.5"/><path d="M10 8v2l1.5 1.5" stroke="#0F4C3A" stroke-width="1.5" stroke-linecap="round"/></svg><span>Historique</span></div>
+                  </div>
+                </div>
+                <div class="dbottom-nav">
+                  <div class="dnav-item"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="4" y="10" width="5" height="7" rx="1" fill="#D4A843"/><rect x="11" y="4" width="5" height="13" rx="1" fill="#D4A843"/></svg><span class="dnav-label active">Accueil</span><div class="dnav-dot"></div></div>
+                  <div class="dnav-item"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M6 4h8a2 2 0 012 2v8a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2z" stroke="#B0B8C5" stroke-width="1.5"/></svg><span class="dnav-label">Diplômes</span></div>
+                  <div class="dnav-item"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M13 4l4 4-4 4M3 12v-1a4 4 0 014-4h10" stroke="#B0B8C5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="dnav-label">Partager</span></div>
+                  <div class="dnav-item"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3" stroke="#B0B8C5" stroke-width="1.5"/><path d="M4 17c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#B0B8C5" stroke-width="1.5" stroke-linecap="round"/></svg><span class="dnav-label">Profil</span></div>
+                </div>
               </div>
             </div>
-            <div class="p-status-dot"></div>
+            <div class="phone-caption">1 — Portefeuille diplômes</div>
           </div>
-          <div class="p-body">
-            <div class="p-label">Mes diplômes certifiés</div>
-            <div class="p-diplome">
-              <div class="p-badge">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </div>
-              <div class="p-univ">Université de Ouagadougou</div>
-              <div class="p-titre">Doctorat en Médecine</div>
-              <div class="p-meta">Mention Très Bien · Juin 2025</div>
-            </div>
-            <div class="p-label" style="margin-top:8px">Identifiant blockchain</div>
-            <div class="p-hash"><span>ID:</span> 0x4f8a2b9c1d3e7f6a0b5c4d2e8f1a3b7c9d0e2f4a6b8c0d2e4f6a8b0c2d4e6f8a</div>
-            <div class="p-label">Partager ma preuve</div>
-            <div class="p-share">
-              <div class="p-share-btn hi">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                Copier lien
-              </div>
-              <div class="p-share-btn">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="currentColor" stroke-width="2"/><polyline points="14 2 14 8 20 8" stroke="currentColor" stroke-width="2"/></svg>
-                PDF officiel
-              </div>
-              <div class="p-share-btn">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 9h18M9 21V9" stroke="currentColor" stroke-width="2"/></svg>
-                QR Code
-              </div>
-              <div class="p-share-btn">
-                <svg width="10" height="10" viewBox="0 0 24 24" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="currentColor" stroke-width="2"/><polyline points="22,6 12,13 2,6" stroke="currentColor" stroke-width="2"/></svg>
-                Email
+          <!-- Écran 2: Partage QR -->
+          <div class="phone-group">
+            <div class="phone">
+              <div class="phone-notch"><div class="phone-notch-bar"></div></div>
+              <div class="screen">
+                <div class="dtopbar">
+                  <div class="dback-btn"><svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M11 4L6 9l5 5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="dtopbar-center"><span style="color:#fff;font-size:13px;font-weight:500;">Partager mon diplôme</span></div>
+                  <div style="width:26px;"></div>
+                </div>
+                <div class="dcontent">
+                  <div class="dqr-card">
+                    <div style="font-size:13px;font-weight:500;color:#1A2E4A;">QR Code officiel</div>
+                    <div class="dqr-placeholder">
+                      <svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="4" y="4" width="14" height="14" rx="2" stroke="#D4A843" stroke-width="2"/><rect x="22" y="4" width="14" height="14" rx="2" stroke="#D4A843" stroke-width="2"/><rect x="4" y="22" width="14" height="14" rx="2" stroke="#D4A843" stroke-width="2"/><rect x="8" y="8" width="6" height="6" fill="#D4A843"/><rect x="26" y="8" width="6" height="6" fill="#D4A843"/><rect x="8" y="26" width="6" height="6" fill="#D4A843"/><rect x="22" y="22" width="4" height="4" fill="#D4A843"/><rect x="28" y="26" width="4" height="4" fill="#D4A843"/><rect x="22" y="30" width="4" height="4" fill="#D4A843"/></svg>
+                      <div style="font-size:9px;color:#9AA3B0;">Scannez pour vérifier</div>
+                    </div>
+                    <div class="dlink-box">diplochain.bf/verify/DC-2024-UBB-04571</div>
+                    <div style="font-size:10px;color:#9AA3B0;text-align:center;">Lien valide 30 jours · Révocable à tout moment</div>
+                  </div>
+                  <div style="font-size:12px;font-weight:500;color:#3A4A5E;">Options de partage</div>
+                  <div class="dshare-option"><div class="dshare-icon" style="background:#E6EDF6;"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2L1.5 4.5v4.5c0 2.2 2.35 4.3 5.5 5 3.15-.7 5.5-2.8 5.5-5V4.5L7 2z" stroke="#185FA5" stroke-width="1.2" stroke-linejoin="round"/></svg></div><div class="dshare-info"><div class="dshare-name">Copier le lien sécurisé</div><div class="dshare-desc">Lien unique et traçable</div></div><span class="dshare-arrow">›</span></div>
+                  <div class="dshare-option"><div class="dshare-icon" style="background:#FAECEA;"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2h10a1 1 0 011 1v6a1 1 0 01-1 1H2a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="#A32D2D" stroke-width="1.2"/><path d="M1 3l6 4 6-4" stroke="#A32D2D" stroke-width="1.2"/></svg></div><div class="dshare-info"><div class="dshare-name">Envoyer par email</div><div class="dshare-desc">PDF officiel en pièce jointe</div></div><span class="dshare-arrow">›</span></div>
+                  <div class="dshare-option" style="border-bottom:none;"><div class="dshare-icon" style="background:#E6F2ED;"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 2H4a1 1 0 00-1 1v8a1 1 0 001 1h6a1 1 0 001-1V3a1 1 0 00-1-1z" stroke="#1A6B42" stroke-width="1.2"/><path d="M5 6h4M5 8h2" stroke="#1A6B42" stroke-width="1.2" stroke-linecap="round"/></svg></div><div class="dshare-info"><div class="dshare-name">Télécharger le PDF</div><div class="dshare-desc">Format officiel avec signature</div></div><span class="dshare-arrow">›</span></div>
+                </div>
               </div>
             </div>
+            <div class="phone-caption">2 — Partage & QR Code</div>
+          </div>
+          <!-- Écran 3: Historique consultations -->
+          <div class="phone-group">
+            <div class="phone">
+              <div class="phone-notch"><div class="phone-notch-bar"></div></div>
+              <div class="screen">
+                <div class="dtopbar">
+                  <div class="dtopbar-logo"><div class="dlogo-hex"><span class="dlogo-letter">D</span></div><span class="dtopbar-title">Historique</span></div>
+                  <div style="background:rgba(212,168,67,0.2);border-radius:20px;padding:2px 8px;font-size:9px;font-weight:500;color:#D4A843;">3 nouvelles</div>
+                </div>
+                <div class="dcontent" style="padding:0;gap:0;">
+                  <div style="background:#fff;">
+                    <div class="dhistory-item">
+                      <div class="dhistory-dot" style="background:#C8A850;"></div>
+                      <div style="flex:1;"><div class="dhistory-text"><strong style="font-weight:500;">Min. Fonction Publique</strong> a consulté votre Master en Informatique</div><div class="dhistory-time">Il y a 15 min</div></div>
+                      <span class="dbadge dbadge-new">Nouveau</span>
+                    </div>
+                    <div class="dhistory-item">
+                      <div class="dhistory-dot" style="background:#C8A850;"></div>
+                      <div style="flex:1;"><div class="dhistory-text"><strong style="font-weight:500;">Votre diplôme est disponible !</strong> Univ. Bobo-Dioulasso vient d'enregistrer votre Master sur blockchain.</div><div class="dhistory-time">28 juin · 10:30</div></div>
+                      <span class="dbadge dbadge-new">Nouveau</span>
+                    </div>
+                    <div class="dhistory-item">
+                      <div class="dhistory-dot" style="background:#185FA5;"></div>
+                      <div style="flex:1;"><div class="dhistory-text"><strong style="font-weight:500;">Ambassade de France</strong> a vérifié votre diplôme pour dossier de visa</div><div class="dhistory-time">3 juin · 16:22</div></div>
+                      <span class="dbadge dbadge-new" style="align-self:flex-start;margin-top:2px;">Inst.</span>
+                    </div>
+                    <div class="dhistory-item" style="border-bottom:none;">
+                      <div class="dhistory-dot" style="background:#1A6B42;"></div>
+                      <div style="flex:1;"><div class="dhistory-text"><strong style="font-weight:500;">ONATEL</strong> a vérifié via le portail public DiploChain</div><div class="dhistory-time">28 mai · 08:45</div></div>
+                      <span class="dbadge dbadge-success" style="align-self:flex-start;margin-top:2px;">OK</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="dbottom-nav">
+                  <div class="dnav-item"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="4" y="10" width="5" height="7" rx="1" stroke="#B0B8C5" stroke-width="1.5"/><rect x="11" y="4" width="5" height="13" rx="1" stroke="#B0B8C5" stroke-width="1.5"/></svg><span class="dnav-label">Accueil</span></div>
+                  <div class="dnav-item"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M6 4h8a2 2 0 012 2v8a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2z" stroke="#B0B8C5" stroke-width="1.5"/></svg><span class="dnav-label">Diplômes</span></div>
+                  <div class="dnav-item"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M13 4l4 4-4 4M3 12v-1a4 4 0 014-4h10" fill="#D4A843" stroke="none"/><path d="M13 4l4 4-4 4M3 12v-1a4 4 0 014-4h10" stroke="#D4A843" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="dnav-label active">Partager</span><div class="dnav-dot"></div></div>
+                  <div class="dnav-item"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3" stroke="#B0B8C5" stroke-width="1.5"/><path d="M4 17c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#B0B8C5" stroke-width="1.5" stroke-linecap="round"/></svg><span class="dnav-label">Profil</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="phone-caption">3 — Historique consultations</div>
+          </div>
+          <!-- Écran 4: Profil diplômé -->
+          <div class="phone-group">
+            <div class="phone">
+              <div class="phone-notch"><div class="phone-notch-bar"></div></div>
+              <div class="screen">
+                <div class="dprofile-header">
+                  <div class="dprofile-avatar">KT</div>
+                  <div class="dprofile-name">Konaté Ibrahim Tapsoba</div>
+                  <div class="dprofile-univ">Université de Bobo-Dioulasso · Diplômé 2024</div>
+                  <div class="dverified-badge"><svg width="9" height="9" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="#D4A843" stroke-width="1.3" stroke-linecap="round"/></svg>Identité vérifiée</div>
+                </div>
+                <div class="dcontent" style="padding:0;gap:0;">
+                  <div style="background:#fff;padding:10px 12px;border-bottom:1px solid #F0EDE6;display:flex;gap:10px;">
+                    <div style="flex:1;text-align:center;"><div style="font-size:16px;font-weight:600;color:#0F4C3A;">2</div><div style="font-size:9px;color:#9AA3B0;margin-top:2px;">Diplômes</div></div>
+                    <div style="width:1px;background:#F0EDE6;"></div>
+                    <div style="flex:1;text-align:center;"><div style="font-size:16px;font-weight:600;color:#0F4C3A;">14</div><div style="font-size:9px;color:#9AA3B0;margin-top:2px;">Vérifications</div></div>
+                    <div style="width:1px;background:#F0EDE6;"></div>
+                    <div style="flex:1;text-align:center;"><div style="font-size:16px;font-weight:600;color:#1A6B42;">100%</div><div style="font-size:9px;color:#9AA3B0;margin-top:2px;">Validés</div></div>
+                  </div>
+                  <div class="dlist-card" style="border-radius:0;border-left:none;border-right:none;">
+                    <div class="dlist-header" style="border-bottom:1px solid #F0EDE6;"><span class="dlist-header-title">Mon compte</span></div>
+                    <div class="dshare-option"><div class="dshare-icon" style="background:#E6EDF6;"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5" r="2.5" stroke="#185FA5" stroke-width="1.2"/><path d="M2 12c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="#185FA5" stroke-width="1.2" stroke-linecap="round"/></svg></div><div class="dshare-info"><div class="dshare-name">Informations personnelles</div><div class="dshare-desc">Nom, date de naissance, contact</div></div><span class="dshare-arrow">›</span></div>
+                    <div class="dshare-option"><div class="dshare-icon" style="background:#FBF3E0;"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><rect x="3" y="5" width="8" height="7" rx="1" stroke="#C8A850" stroke-width="1.2"/><path d="M5 5V4a2 2 0 114 0v1" stroke="#C8A850" stroke-width="1.2"/></svg></div><div class="dshare-info"><div class="dshare-name">Sécurité & authentification</div><div class="dshare-desc">PIN, biométrie, clé de récupération</div></div><span class="dshare-arrow">›</span></div>
+                    <div class="dshare-option" style="border-bottom:none;"><div class="dshare-icon" style="background:#E6F2ED;"><svg width="13" height="13" viewBox="0 0 14 14" fill="none"><path d="M7 2L1.5 4.5v4.5c0 2.2 2.35 4.3 5.5 5 3.15-.7 5.5-2.8 5.5-5V4.5L7 2z" stroke="#1A6B42" stroke-width="1.2" stroke-linejoin="round"/></svg></div><div class="dshare-info"><div class="dshare-name">Confidentialité des données</div><div class="dshare-desc">Qui peut voir mes diplômes</div></div><span class="dshare-arrow">›</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="phone-caption">4 — Profil diplômé</div>
           </div>
         </div>
       </div>
     </div>
-    <div class="actor-desc reveal">
+    <div class="actor-desc reveal" style="grid-column:1/-1;max-width:680px;margin:0 auto;">
       <h3>Interface<br><span>Diplômé</span></h3>
       <p>Le diplômé accède à ses diplômes certifiés et les partage avec qui il veut, quand il veut. Aucune démarche administrative — tout est automatique dès l'émission.</p>
       <ul class="steps">
@@ -1518,57 +1868,200 @@ footer {
 
   <!-- Recruteur -->
   <div class="actor-screen" id="actor-recruteur">
-    <div class="mockup reveal">
-      <div class="phone-frame">
-        <div class="phone-notch">
-          <div class="phone-camera"></div>
-          <div class="phone-speaker"></div>
-          <div class="phone-camera"></div>
-        </div>
-        <div class="phone-inner">
-          <div class="p-topbar">
-            <div class="p-topbar-left">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="#1A3A5C" stroke-width="1.8"/><path d="M21 21l-4.35-4.35" stroke="#1A3A5C" stroke-width="1.8" stroke-linecap="round"/></svg>
-              <div>
-                <div class="p-appname">DIPLOCHAIN</div>
-                <div class="p-role">Portail Vérification</div>
-              </div>
-            </div>
-            <div class="p-status-dot"></div>
-          </div>
-          <div class="p-body">
-            <div class="p-label">Identifiant du diplôme</div>
-            <div class="p-verify-input">
-              <div class="p-field-label">Entrez l'identifiant ou scannez le QR</div>
-              <div class="p-id">DC-2025-OUA-00847</div>
-            </div>
-            <button class="p-btn red">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="white" stroke-width="1.8"/><path d="M21 21l-4.35-4.35" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
-              Vérifier maintenant
-            </button>
-            <div class="p-result ok">
-              <div class="p-result-head">
-                <div class="p-result-icon ok">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="mockup reveal" style="max-width:100%;width:100%;grid-column:1/-1;">
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@600&display=swap');
+        .recr-wrap { font-family:'DM Sans',sans-serif; display:flex; flex-direction:column; align-items:center; gap:2rem; }
+        .recr-wrap .phones-row { display:flex; gap:1.5rem; flex-wrap:wrap; justify-content:center; }
+        .recr-wrap .phone-group { display:flex; flex-direction:column; align-items:center; gap:8px; }
+        .recr-wrap .phone-caption { font-size:12px; color:#7A8499; font-weight:500; }
+        .recr-wrap .phone { width:280px; min-height:560px; background:#fff; border-radius:36px; border:2px solid #D6D0C4; overflow:hidden; box-shadow:0 2px 0 #D6D0C4; display:flex; flex-direction:column; }
+        .recr-wrap .phone-notch { height:24px; background:#1E3A6E; display:flex; align-items:center; justify-content:center; }
+        .recr-wrap .phone-notch-bar { width:70px; height:5px; background:rgba(255,255,255,0.2); border-radius:10px; }
+        .recr-wrap .screen { flex:1; display:flex; flex-direction:column; overflow:hidden; }
+        .recr-wrap .rtopbar { background:#1E3A6E; padding:12px 16px 10px; display:flex; align-items:center; justify-content:space-between; }
+        .recr-wrap .rtopbar-logo { display:flex; align-items:center; gap:8px; }
+        .recr-wrap .rlogo-hex { width:26px; height:26px; background:#D4A843; clip-path:polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%); display:flex; align-items:center; justify-content:center; }
+        .recr-wrap .rlogo-letter { font-size:12px; font-weight:600; color:#1E3A6E; }
+        .recr-wrap .rtopbar-title { font-size:13px; font-weight:500; color:#fff; }
+        .recr-wrap .rtopbar-right { width:30px; height:30px; background:rgba(255,255,255,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:600; color:#fff; }
+        .recr-wrap .rcontent { flex:1; background:#F8F7F4; overflow-y:auto; padding:12px; display:flex; flex-direction:column; gap:10px; }
+        .recr-wrap .rhero-card { background:linear-gradient(135deg,#1E3A6E 0%,#2A4F96 100%); border-radius:14px; padding:14px; color:#fff; }
+        .recr-wrap .rhero-greeting { font-size:11px; color:rgba(255,255,255,0.6); margin-bottom:2px; }
+        .recr-wrap .rhero-name { font-family:'Playfair Display',serif; font-size:15px; color:#fff; margin-bottom:2px; }
+        .recr-wrap .rhero-org { font-size:10px; color:rgba(255,255,255,0.55); margin-bottom:10px; }
+        .recr-wrap .rsearch-bar { background:rgba(255,255,255,0.12); border-radius:9px; padding:9px 12px; display:flex; align-items:center; gap:8px; }
+        .recr-wrap .rsearch-text { font-size:11px; color:rgba(255,255,255,0.5); }
+        .recr-wrap .rsection-title { font-size:12px; font-weight:500; color:#3A4A5E; }
+        .recr-wrap .rverify-box { background:#fff; border-radius:12px; border:1px solid #E8E4DC; padding:14px; display:flex; flex-direction:column; gap:10px; }
+        .recr-wrap .rverify-label { font-size:10px; color:#9AA3B0; letter-spacing:1px; text-transform:uppercase; }
+        .recr-wrap .rverify-input { background:#F5F3EE; border:1.5px solid #D6D0C4; border-radius:8px; padding:10px 12px; }
+        .recr-wrap .rverify-id { font-family:monospace; font-size:13px; color:#1E3A6E; font-weight:700; letter-spacing:1px; }
+        .recr-wrap .rbtn-verify { background:#1E3A6E; color:#fff; border:none; border-radius:9px; padding:10px; font-size:12px; font-weight:500; font-family:'DM Sans',sans-serif; width:100%; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; }
+        .recr-wrap .rbtn-scan { background:#D4A843; color:#1E3A6E; border:none; border-radius:9px; padding:10px; font-size:12px; font-weight:600; font-family:'DM Sans',sans-serif; width:100%; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; }
+        .recr-wrap .rresult-ok { background:#ECFDF5; border:1.5px solid #A7F3D0; border-radius:10px; padding:12px; }
+        .recr-wrap .rresult-fail { background:#FEF2F2; border:1.5px solid #FECACA; border-radius:10px; padding:12px; }
+        .recr-wrap .rresult-head { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+        .recr-wrap .rresult-icon-ok { width:22px; height:22px; border-radius:50%; background:#27AE60; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .recr-wrap .rresult-icon-fail { width:22px; height:22px; border-radius:50%; background:#C0392B; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .recr-wrap .rresult-title-ok { font-family:'Playfair Display',serif; font-size:14px; color:#1A6B3C; }
+        .recr-wrap .rresult-title-fail { font-family:'Playfair Display',serif; font-size:14px; color:#C0392B; }
+        .recr-wrap .rresult-detail { font-size:10px; color:#5A6478; line-height:1.7; }
+        .recr-wrap .rtimer { display:flex; align-items:center; gap:5px; margin-top:6px; font-size:10px; color:#9AA3B0; }
+        .recr-wrap .rstats-row { display:flex; gap:8px; }
+        .recr-wrap .rstat-mini { flex:1; background:#fff; border-radius:10px; border:1px solid #E8E4DC; padding:10px; text-align:center; }
+        .recr-wrap .rstat-val { font-size:18px; font-weight:600; color:#1E3A6E; }
+        .recr-wrap .rstat-lbl { font-size:9px; color:#9AA3B0; margin-top:2px; }
+        .recr-wrap .rlist-card { background:#fff; border-radius:10px; border:1px solid #E8E4DC; overflow:hidden; }
+        .recr-wrap .rlist-header { padding:10px 12px 7px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #F0EDE6; }
+        .recr-wrap .rlist-header-title { font-size:12px; font-weight:500; color:#1A2E4A; }
+        .recr-wrap .rlist-item { padding:9px 12px; display:flex; align-items:center; gap:9px; border-bottom:1px solid #F5F3EE; }
+        .recr-wrap .rlist-item:last-child { border-bottom:none; }
+        .recr-wrap .ritem-icon { width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; color:#1A2E4A; flex-shrink:0; }
+        .recr-wrap .ritem-info { flex:1; min-width:0; }
+        .recr-wrap .ritem-name { font-size:11px; font-weight:500; color:#1A2E4A; }
+        .recr-wrap .ritem-detail { font-size:9px; color:#9AA3B0; margin-top:1px; }
+        .recr-wrap .rbadge { font-size:9px; font-weight:500; padding:2px 7px; border-radius:20px; }
+        .recr-wrap .rbadge-ok { background:#E6F2ED; color:#1A6B42; }
+        .recr-wrap .rbadge-fail { background:#FAECEA; color:#A32D2D; }
+        .recr-wrap .rbottom-nav { background:#fff; border-top:1px solid #E8E4DC; display:flex; padding:7px 0 3px; }
+        .recr-wrap .rnav-item { flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:3px 0; }
+        .recr-wrap .rnav-dot { width:4px; height:4px; border-radius:50%; background:#D4A843; margin-top:2px; }
+        .recr-wrap .rnav-label { font-size:9px; color:#9AA3B0; }
+        .recr-wrap .rnav-label.active { color:#D4A843; }
+        .recr-wrap .rback-btn { width:26px; height:26px; display:flex; align-items:center; justify-content:center; }
+        .recr-wrap .rtopbar-center { flex:1; text-align:center; }
+        .recr-wrap .rfree-banner { background:rgba(212,168,67,0.15); border:1px solid rgba(212,168,67,0.3); border-radius:8px; padding:9px 12px; text-align:center; font-size:10px; color:#8B6914; }
+      </style>
+      <div class="recr-wrap">
+        <div class="phones-row">
+          <!-- Écran 1: Accueil vérification -->
+          <div class="phone-group">
+            <div class="phone">
+              <div class="phone-notch"><div class="phone-notch-bar"></div></div>
+              <div class="screen">
+                <div class="rtopbar">
+                  <div class="rtopbar-logo"><div class="rlogo-hex"><span class="rlogo-letter">D</span></div><span class="rtopbar-title">DiploChain</span></div>
+                  <div class="rtopbar-right">SM</div>
                 </div>
-                <div class="p-result-title ok">DIPLÔME AUTHENTIQUE</div>
-              </div>
-              <div class="p-result-detail">
-                <strong>SAWADOGO Aminata</strong><br>
-                Doctorat en Médecine · Mention Très Bien<br>
-                Université de Ouagadougou · Juin 2025<br>
-                Signature vérifiée · Blockchain confirmée ✓
-              </div>
-              <div class="p-timer">
-                <svg width="9" height="9" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                Vérifié en 2.3s · 0 FCFA
+                <div class="rcontent">
+                  <div class="rhero-card">
+                    <div class="rhero-greeting">Bonjour,</div>
+                    <div class="rhero-name">Sanogo Mamadou</div>
+                    <div class="rhero-org">Ministère de la Fonction Publique</div>
+                    <div class="rsearch-bar"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4" stroke="rgba(255,255,255,0.5)" stroke-width="1.3"/><path d="M10.5 10.5l-2-2" stroke="rgba(255,255,255,0.5)" stroke-width="1.3" stroke-linecap="round"/></svg><span class="rsearch-text">Entrer un identifiant ou scanner...</span></div>
+                  </div>
+                  <div class="rstats-row">
+                    <div class="rstat-mini"><div class="rstat-val">247</div><div class="rstat-lbl">Vérifications</div></div>
+                    <div class="rstat-mini"><div class="rstat-val" style="color:#1A6B42;">241</div><div class="rstat-lbl">Authentiques</div></div>
+                    <div class="rstat-mini"><div class="rstat-val" style="color:#C0392B;">6</div><div class="rstat-lbl">Suspects</div></div>
+                  </div>
+                  <div class="rsection-title">Vérifications récentes</div>
+                  <div class="rlist-card">
+                    <div class="rlist-header"><span class="rlist-header-title">Historique</span><span style="font-size:10px;color:#D4A843;">Voir tout →</span></div>
+                    <div class="rlist-item"><div class="ritem-icon" style="background:#E6F2ED;">✓</div><div class="ritem-info"><div class="ritem-name">Konaté Ibrahim Tapsoba</div><div class="ritem-detail">Master Informatique · DC-2024-UBB-04571</div></div><span class="rbadge rbadge-ok">Authentique</span></div>
+                    <div class="rlist-item"><div class="ritem-icon" style="background:#E6F2ED;">✓</div><div class="ritem-info"><div class="ritem-name">Aïssata Fofana</div><div class="ritem-detail">Licence Droit · DC-2024-UBB-02341</div></div><span class="rbadge rbadge-ok">Authentique</span></div>
+                    <div class="rlist-item"><div class="ritem-icon" style="background:#FAECEA;">✗</div><div class="ritem-info"><div class="ritem-name">Identifiant inconnu</div><div class="ritem-detail">DC-FAKE-XXXX-00000</div></div><span class="rbadge rbadge-fail">Suspect</span></div>
+                  </div>
+                  <div class="rfree-banner">✓ Accès public gratuit — Aucun compte requis · Financé par les établissements</div>
+                </div>
+                <div class="rbottom-nav">
+                  <div class="rnav-item"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="4" y="10" width="5" height="7" rx="1" fill="#D4A843"/><rect x="11" y="4" width="5" height="13" rx="1" fill="#D4A843"/></svg><span class="rnav-label active">Accueil</span><div class="rnav-dot"></div></div>
+                  <div class="rnav-item"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="6" stroke="#B0B8C5" stroke-width="1.5"/><path d="M8 10l1.5 1.5L12.5 8" stroke="#B0B8C5" stroke-width="1.5" stroke-linecap="round"/></svg><span class="rnav-label">Vérifier</span></div>
+                  <div class="rnav-item"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="5" y="5" width="10" height="10" rx="1" stroke="#B0B8C5" stroke-width="1.5"/><path d="M8 8h4v4H8z" stroke="#B0B8C5" stroke-width="1.2"/></svg><span class="rnav-label">Scanner</span></div>
+                  <div class="rnav-item"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3" stroke="#B0B8C5" stroke-width="1.5"/><path d="M4 17c0-3.314 2.686-6 6-6s6 2.686 6 6" stroke="#B0B8C5" stroke-width="1.5" stroke-linecap="round"/></svg><span class="rnav-label">Profil</span></div>
+                </div>
               </div>
             </div>
+            <div class="phone-caption">1 — Tableau de bord</div>
+          </div>
+          <!-- Écran 2: Saisie identifiant -->
+          <div class="phone-group">
+            <div class="phone">
+              <div class="phone-notch"><div class="phone-notch-bar"></div></div>
+              <div class="screen">
+                <div class="rtopbar">
+                  <div class="rback-btn"><svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M11 4L6 9l5 5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="rtopbar-center"><span style="color:#fff;font-size:13px;font-weight:500;">Vérifier un diplôme</span></div>
+                  <div style="width:26px;"></div>
+                </div>
+                <div class="rcontent">
+                  <div class="rverify-box">
+                    <div class="rverify-label">Identifiant du diplôme</div>
+                    <div class="rverify-input"><div class="rverify-id">DC-2025-OUA-00847</div></div>
+                    <button class="rbtn-verify"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4" stroke="white" stroke-width="1.3"/><path d="M10.5 10.5l-2-2" stroke="white" stroke-width="1.3" stroke-linecap="round"/></svg>Vérifier maintenant</button>
+                    <div style="text-align:center;font-size:10px;color:#9AA3B0;">— ou —</div>
+                    <button class="rbtn-scan"><svg width="12" height="12" viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="4" height="4" rx="1" stroke="#1E3A6E" stroke-width="1.2"/><rect x="8" y="2" width="4" height="4" rx="1" stroke="#1E3A6E" stroke-width="1.2"/><rect x="2" y="8" width="4" height="4" rx="1" stroke="#1E3A6E" stroke-width="1.2"/><rect x="9" y="9" width="2" height="2" fill="#1E3A6E"/></svg>Scanner le QR Code</button>
+                  </div>
+                  <div class="rresult-ok">
+                    <div class="rresult-head"><div class="rresult-icon-ok"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="rresult-title-ok">DIPLÔME AUTHENTIQUE</div></div>
+                    <div class="rresult-detail"><strong>SAWADOGO Aminata</strong><br>Doctorat en Médecine · Mention Très Bien<br>Université de Ouagadougou · Juin 2025<br>Signature vérifiée · Blockchain confirmée ✓</div>
+                    <div class="rtimer"><svg width="9" height="9" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Vérifié en 2.3s · 0 FCFA</div>
+                  </div>
+                  <div class="rfree-banner">Vérification 100% gratuite · Résultat en moins de 3 secondes</div>
+                </div>
+              </div>
+            </div>
+            <div class="phone-caption">2 — Vérification (résultat ✓)</div>
+          </div>
+          <!-- Écran 3: Résultat faux diplôme -->
+          <div class="phone-group">
+            <div class="phone">
+              <div class="phone-notch"><div class="phone-notch-bar"></div></div>
+              <div class="screen">
+                <div class="rtopbar">
+                  <div class="rback-btn"><svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M11 4L6 9l5 5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="rtopbar-center"><span style="color:#fff;font-size:13px;font-weight:500;">Vérifier un diplôme</span></div>
+                  <div style="width:26px;"></div>
+                </div>
+                <div class="rcontent">
+                  <div class="rverify-box">
+                    <div class="rverify-label">Identifiant du diplôme</div>
+                    <div class="rverify-input" style="border-color:#FECACA;"><div class="rverify-id" style="color:#C0392B;">DC-FAKE-XXXX-00000</div></div>
+                    <button class="rbtn-verify">Vérifier à nouveau</button>
+                  </div>
+                  <div class="rresult-fail">
+                    <div class="rresult-head"><div class="rresult-icon-fail"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg></div><div class="rresult-title-fail">DIPLÔME NON RECONNU</div></div>
+                    <div class="rresult-detail">Aucun diplôme correspondant à cet identifiant n'a été trouvé dans la blockchain DiploChain.<br><br>Ce document pourrait être falsifié ou non enregistré.</div>
+                    <div class="rtimer"><svg width="9" height="9" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Rejeté en 1.8s · 0 FCFA</div>
+                  </div>
+                  <div style="background:#FAECEA;border-radius:8px;padding:10px 12px;font-size:10px;color:#A32D2D;line-height:1.5;">⚠️ Conservez ce document et signalez la tentative de fraude aux autorités compétentes.</div>
+                </div>
+              </div>
+            </div>
+            <div class="phone-caption">3 — Résultat faux diplôme ✗</div>
+          </div>
+          <!-- Écran 4: Scan QR Code -->
+          <div class="phone-group">
+            <div class="phone">
+              <div class="phone-notch"><div class="phone-notch-bar"></div></div>
+              <div class="screen">
+                <div class="rtopbar">
+                  <div class="rback-btn"><svg width="16" height="16" viewBox="0 0 18 18" fill="none"><path d="M11 4L6 9l5 5" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  <div class="rtopbar-center"><span style="color:#fff;font-size:13px;font-weight:500;">Scanner QR Code</span></div>
+                  <div style="width:26px;"></div>
+                </div>
+                <div style="flex:1;background:#111827;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:20px;">
+                  <div style="width:200px;height:200px;border:2px solid rgba(255,255,255,0.2);border-radius:12px;position:relative;display:flex;align-items:center;justify-content:center;">
+                    <div style="position:absolute;top:0;left:0;width:20px;height:20px;border-top:3px solid #D4A843;border-left:3px solid #D4A843;border-radius:4px 0 0 0;"></div>
+                    <div style="position:absolute;top:0;right:0;width:20px;height:20px;border-top:3px solid #D4A843;border-right:3px solid #D4A843;border-radius:0 4px 0 0;"></div>
+                    <div style="position:absolute;bottom:0;left:0;width:20px;height:20px;border-bottom:3px solid #D4A843;border-left:3px solid #D4A843;border-radius:0 0 0 4px;"></div>
+                    <div style="position:absolute;bottom:0;right:0;width:20px;height:20px;border-bottom:3px solid #D4A843;border-right:3px solid #D4A843;border-radius:0 0 4px 0;"></div>
+                    <div style="text-align:center;color:rgba(255,255,255,0.4);font-size:10px;line-height:1.6;">Pointez l'appareil photo<br>vers le QR Code</div>
+                  </div>
+                  <div style="font-size:11px;color:rgba(255,255,255,0.5);text-align:center;">Scannez le QR Code présent<br>sur le document du candidat</div>
+                </div>
+                <div class="rcontent" style="flex:0;padding:12px;background:#F8F7F4;">
+                  <div class="rfree-banner">Aucun compte requis · Gratuit · Résultat immédiat</div>
+                </div>
+              </div>
+            </div>
+            <div class="phone-caption">4 — Scanner QR Code</div>
           </div>
         </div>
       </div>
     </div>
-    <div class="actor-desc reveal">
+    <div class="actor-desc reveal" style="grid-column:1/-1;max-width:680px;margin:0 auto;">
       <h3>Interface<br><span>Recruteur</span></h3>
       <p>Aucun compte requis. Le recruteur, jury de concours ou ambassade entre simplement l'identifiant du diplôme — le résultat s'affiche en moins de 3 secondes, gratuitement.</p>
       <ul class="steps">
